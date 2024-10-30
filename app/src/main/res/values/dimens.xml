@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="text_size"> 22sp</dimen>
+    <dimen name="icon_size">24dp</dimen>
+    <dimen name="corner_radius">16dp</dimen>
+    <dimen name="button_padding">16dp</dimen>
+    <dimen name="margin_mainScreen_common_left">16dp</dimen>
+    <dimen name="margin_settingScreen_common_right">12dp</dimen>
+    <dimen name="margin_screenHeader_common_top">14dp</dimen>
+    <dimen name="height_common_list_element">61dp</dimen>
+
+</resources>

@@ -1,9 +1,33 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.PlaylistMaker" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryVariant">@color/white</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
     </style>
-
-    <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />
 </resources>
+
+
+
+
+
+<!--<resources xmlns:tools="http://schemas.android.com/tools">-->
+<!--    &lt;!&ndash; Base application theme. &ndash;&gt;-->
+<!--    <style name="Base.Theme.PlaylistMaker" parent="Theme.Material3.DayNight.NoActionBar">-->
+<!--        &lt;!&ndash; Other customizations &ndash;&gt;-->
+<!--        <item name="colorButtonNormal">@color/white</item> &lt;!&ndash; Задаем белый цвет для кнопок &ndash;&gt;-->
+<!--        <item name="colorPrimary">@color/white</item> &lt;!&ndash; Если хочешь изменить основной цвет приложения &ndash;&gt;-->
+<!--        <item name="android:background">@color/teal_200</item>-->
+<!--    </style>-->
+
+
+<!--    <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />-->
+<!--</resources>-->

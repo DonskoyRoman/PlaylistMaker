@@ -1,3 +1,16 @@
 <resources>
-    <string name="app_name">Playlist Maker</string>
+    <string name="app_name" translatable="false">Playlist maker</string>
+    <string name="_2_10" translatable="false">2/10</string>
+    <string name="Question" translatable="false">Вопрос:</string>
+    <!--    <string name="app_name">Practicum Project</string> -->
+    <string name="title_hello">Привет, Практикум</string>
+    <string name="Search">Поиск</string>
+    <string name="Mediateka">Медиатека</string>
+    <string name="Settings">Настройки</string>
+    <string name="dark_theme">Темная тема</string>
+    <string name="share_app">Поделиться приложением</string>
+    <string name="msg_support">Написать в поддержку</string>
+    <string name="user_agreement">Пользовательское соглашение</string>
+    <string name="arrow_left">left arrow</string>
+
 </resources>
