@@ -16,7 +16,7 @@
         android:paddingBottom="@dimen/button_padding">
 
         <ImageView
-            android:id="@+id/image_button"
+            android:id="@+id/back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackgroundBorderless"
@@ -24,6 +24,7 @@
             android:minWidth="0dp"
             android:minHeight="0dp"
             android:padding="8dp"
+            android:layout_marginLeft="12dp"
             android:scaleType="centerInside"
             android:src="@drawable/ic_arrow_left"
             app:tint="@color/black" />
@@ -60,7 +61,7 @@
         app:drawableEndCompat="@drawable/ic_msg_support" />
 
     <TextView
-        android:id="@+id/button_agreement"
+        android:id="@+id/button_user_agreement"
         style="@style/SettingsMenuButtons"
         android:layout_width="match_parent"
         android:text="@string/user_agreement"

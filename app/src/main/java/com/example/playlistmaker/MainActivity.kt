@@ -42,22 +42,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(settingsIntent)
         }
 
-//        // тост на первую кнопку
-//        searchButton.setOnClickListener(object : View.OnClickListener {
-//            override fun onClick(v: android.view.View?) {
-//                Toast.makeText(this@MainActivity, "Нажата кнопка поиска", Toast.LENGTH_SHORT).show()
-//            }
-//        })
-//
-//        // тост на вторую кнопку
-//        mediaButton.setOnClickListener {
-//            Toast.makeText(this, "Нажата кнопка медиа", Toast.LENGTH_SHORT).show()
-//        }
-//
-//        // тост на третью кнопку
-//        settingsButton.setOnClickListener {
-//            Toast.makeText(this, "Нажата кнопка настроек", Toast.LENGTH_SHORT).show()
-//        }
     }
 }
 

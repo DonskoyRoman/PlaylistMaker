@@ -11,20 +11,22 @@
 
 
     <style name="HeaderTextStyle">
-        <item name="android:textColor">@color/YP_black</item>
+        <item name="android:textColor">@color/black</item>
         <item name="android:textSize">22sp</item>
         <item name="android:textFontWeight">500</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:padding">16dp</item>
     </style>
 
-    <!--    <item name="android:backgroundTint">@color/YP_blue</item>-->
-
-    <style name="WhiteButtonStyle" parent="HeaderTextStyle">
-        <item name="android:backgroundTint">@color/white</item>
+    <style name="WhiteButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:backgroundTint">@color/YP_white</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:padding">16dp</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:letterSpacing">0</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/YP_black</item>
         <item name="cornerRadius">@dimen/corner_radius</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0dp</item>
