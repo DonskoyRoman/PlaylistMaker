@@ -14,7 +14,7 @@
     <string name="arrow_left">left arrow</string>
     <string name="email_subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="email_body">Спасибо разработчикам и разработчицам за крутое приложение!</string>
-    <string name="course_link">https://practicum.yandex.ru/learn/android-developer/courses/43395269-905d-4d7a-81c5-fb123dcaf2c1/sprints/286466/topics/65a33fc6-5f85-46ff-8bf6-a4bde748fa13/lessons/e6dda1bb-2cfe-4f5f-a115-4592c3a6fa21/</string>
+    <string name="course_link">https://practicum.yandex.ru/android-developer/</string>
     <string name="user_agreement_link">https://yandex.ru/legal/practicum_offer/</string>
     <string name="developer_email">nezerbug1@yandex.ru</string>
     <string name="input_hint">Поиск</string>
