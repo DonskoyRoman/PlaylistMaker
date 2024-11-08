@@ -10,8 +10,26 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
+
+    private val imageUrl = "https://img.freepik.com/free-vector/open-blue-book-white_1308-69339.jpg"
+
+    companion object {
+        val hamsterNames = listOf("Алиса", "Бимбо", "Вжик", "Дасти", "Китти", "Мафин")
+
+        val hamsterContent = listOf(
+            "Говоря об отличии сирийских хомяков от обычных джунгариков, Марина Олеговна отмечает, что особой разницы, кроме размера, нет",
+            "Помимо сбалансированного корма, который можно купить в зоомагазине, в рацион следует включать свежую траву, сено, овощи, фрукты.",
+            "Регулярно следует чистить вольер, менять подстилку.",
+            "Хомяки довольно активные животные. Для того чтобы животным было комфортно, в клетке, вольере следует установить различные приспособления.",
+            "Оптимальная для содержания хомяков температура воздуха — 20–24С.",
+            "Выпускать хомяков из клетки побегать по комнате можно, но при условии, что животное ручное."
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -22,10 +40,12 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
         val searchButton = findViewById<Button>(R.id.button_search)
         val mediaButton = findViewById<Button>(R.id.button_media)
         val settingsButton = findViewById<Button>(R.id.button_settings)
+//        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+//        recyclerView.layoutManager = LinearLayoutManager(this) // если мы не определили его в XML
+
 
         searchButton.setOnClickListener {
             val searchIntent = Intent(this, SearchActivity::class.java)
@@ -33,6 +53,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         mediaButton.setOnClickListener {
+//            val testIntent = Intent(this, test::class.java)
+//            startActivity(testIntent)
+
             val mediaIntent = Intent(this, MediaActivity::class.java)
             startActivity(mediaIntent)
         }

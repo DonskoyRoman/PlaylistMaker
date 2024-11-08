@@ -11,7 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
+        android:layout_margin="@dimen/small_padding_4dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/button_padding">
@@ -41,7 +41,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/large_padding_16dp"
         android:background="@drawable/rounded_corners"
         android:orientation="horizontal"
         tools:context=".MainActivity">
@@ -51,26 +51,35 @@
             android:layout_width="328dp"
             android:layout_height="36dp"
             android:background="@null"
-            android:drawablePadding="4dp"
+            android:drawablePadding="@dimen/small_padding_4dp"
             android:hint="@string/input_hint"
             android:inputType="text"
             android:maxLines="1"
-            android:padding="8dp"
+            android:padding="@dimen/medium_padding_8dp"
             android:paddingStart="14dp"
             android:textColor="@android:color/black"
             android:textColorHint="@color/YP_light_gray_text"
             android:textCursorDrawable="@drawable/ic_cursor_blue"
-            app:drawableStartCompat="@drawable/ic_search_grey" />
+            app:drawableStartCompat="@drawable/ic_search_gray" />
 
         <ImageView
             android:id="@+id/clearIcon"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
+            android:layout_width="@dimen/clear_icon_scale"
+            android:layout_height="@dimen/clear_icon_scale"
             android:layout_gravity="center"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="@dimen/medium_padding_8dp"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
-            android:visibility="gone"
+
             app:tint="@color/clear_icon" />
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/trackListRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="@dimen/large_padding_16dp"
+        android:layout_marginBottom="@dimen/large_padding_16dp"
+        android:layout_weight="1" />
 
 </LinearLayout>
