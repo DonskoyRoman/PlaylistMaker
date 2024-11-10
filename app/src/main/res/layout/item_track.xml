@@ -1,0 +1,76 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="@dimen/medium_padding_8dp">
+
+    <ImageView
+        android:id="@+id/artworkImage"
+        android:layout_width="@dimen/track_search_icon_45dp"
+        android:layout_height="@dimen/track_search_icon_45dp"
+        android:layout_marginEnd="@dimen/medium_padding_8dp"
+        android:src="@drawable/placeholder"
+        android:background="@android:color/transparent"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingStart="@dimen/medium_padding_8dp"
+        android:paddingEnd="@dimen/medium_padding_8dp"
+        android:layout_gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/trackName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Error404"
+            android:layout_gravity="center_vertical"
+            android:maxLines="1"
+            android:ellipsize="end"
+            style="@style/TrackTitleStyle"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="1dp">
+
+            <TextView
+                android:id="@+id/artistName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:maxWidth="200dp"
+                android:ellipsize="end"
+                android:text="@string/Error404"
+                style="@style/TrackGroupAndTimeStyle"/>
+
+            <ImageView
+                android:id="@+id/separatorImage"
+                android:layout_width="3dp"
+                android:layout_height="3dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:src="@drawable/ic_separator_circle"
+                android:layout_gravity="center_vertical"/>
+
+            <TextView
+                android:id="@+id/trackTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Error404"
+                android:ellipsize="end"
+                style="@style/TrackGroupAndTimeStyle"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/arrowIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow_forward_search"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="12dp"/>
+</LinearLayout>

@@ -18,5 +18,6 @@
     <string name="user_agreement_link">https://yandex.ru/legal/practicum_offer/</string>
     <string name="developer_email">nezerbug1@yandex.ru</string>
     <string name="input_hint">Поиск</string>
+    <string name="Error404">Ошибка 404</string>
 
 </resources>
