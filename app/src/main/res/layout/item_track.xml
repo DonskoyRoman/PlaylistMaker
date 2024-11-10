@@ -26,6 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/Error404"
+            android:layout_gravity="center_vertical"
             android:maxLines="1"
             android:ellipsize="end"
             style="@style/TrackTitleStyle"/>
