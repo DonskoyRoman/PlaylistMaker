@@ -19,4 +19,7 @@
     <color name="Transparent">#00FFFFFF</color>
     <color name="rounded_corners_gray">#FFFFFF</color>
     <color name="clear_icon">#1A1B22</color>
+    <color name="Error_textGrayWhite">#1A1B22</color>
+    <color name="refresh_button_background">#FFFFFF</color>
+
 </resources>

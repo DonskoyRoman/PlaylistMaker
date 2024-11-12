@@ -37,6 +37,7 @@
             android:text="@string/Search" />
     </LinearLayout>
 
+
     <LinearLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
@@ -48,22 +49,25 @@
 
         <EditText
             android:id="@+id/inputEditText"
+            style="@style/TrackTitleStyle"
             android:layout_width="0dp"
             android:layout_height="36dp"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:background="@null"
             android:drawablePadding="@dimen/medium_padding_8dp"
             android:hint="@string/input_hint"
+            android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLines="1"
-            android:layout_gravity="center_vertical"
             android:padding="@dimen/medium_padding_8dp"
             android:paddingStart="14dp"
+            android:singleLine="true"
+            android:textColor="#1A1B22"
             android:textColorHint="@color/YP_light_gray_text"
             android:textCursorDrawable="@drawable/ic_cursor_blue"
-            app:drawableStartCompat="@drawable/ic_search_gray"
-            style="@style/TrackTitleStyle"
-            android:textColor="#1A1B22"/>
+            app:drawableStartCompat="@drawable/ic_search_gray" />
+
 
         <ImageView
             android:id="@+id/clearIcon"
@@ -72,10 +76,73 @@
             android:layout_gravity="center"
             android:layout_marginEnd="@dimen/medium_padding_8dp"
             android:src="@drawable/ic_clear_button"
-            app:tint="@color/clear_icon"
             android:visibility="gone"
-            />
+            app:tint="@color/clear_icon" />
     </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/imageNetworkErrorXML"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/paddingErrorImage_80dp"
+        android:visibility="gone"
+
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/image_network_error" />
+
+        <TextView
+            style="@style/ErrorSearchActivityTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/networkErrorText1" />
+
+        <TextView
+            style="@style/ErrorSearchActivityTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:text="@string/networkErrorText2" />
+
+        <Button
+            android:id="@+id/refreshButton"
+            style="@style/RefreshButtonTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onRefreshClick"
+            android:text="@string/reloadButton" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/imageNoResultsErrorXML"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/paddingErrorImage_80dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/medium_padding_8dp"
+            android:src="@drawable/image_no_results_error" />
+
+        <TextView
+            style="@style/ErrorSearchActivityTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/NoResultsErrorText"
+            android:textAppearance="?attr/textAppearanceHeadline6" />
+    </LinearLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/trackListRecyclerView"

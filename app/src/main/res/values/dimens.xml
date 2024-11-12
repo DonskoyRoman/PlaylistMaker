@@ -13,4 +13,5 @@
     <dimen name="medium_padding_8dp">8dp</dimen>
     <dimen name="large_padding_16dp">16dp</dimen>
     <dimen name="track_search_icon_45dp">45dp</dimen>
+    <dimen name="paddingErrorImage_80dp">80dp</dimen>
 </resources>

@@ -9,8 +9,7 @@
         android:layout_width="@dimen/track_search_icon_45dp"
         android:layout_height="@dimen/track_search_icon_45dp"
         android:layout_marginEnd="@dimen/medium_padding_8dp"
-        android:src="@drawable/placeholder"
-        android:background="@android:color/transparent"/>
+        android:src="@drawable/placeholder"/>
 
     <LinearLayout
         android:orientation="vertical"
