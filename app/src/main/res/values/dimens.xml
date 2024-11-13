@@ -4,13 +4,16 @@
     <dimen name="icon_size">24dp</dimen>
     <dimen name="corner_radius">16dp</dimen>
     <dimen name="button_padding">16dp</dimen>
+
     <dimen name="margin_mainScreen_common_left">16dp</dimen>
     <dimen name="margin_settingScreen_common_right">12dp</dimen>
     <dimen name="margin_screenHeader_common_top">14dp</dimen>
     <dimen name="height_common_list_element">60dp</dimen>
     <dimen name="clear_icon_scale">16dp</dimen>
+    <dimen name="very_small_corner_radius">2dp</dimen>
     <dimen name="small_padding_4dp">4dp</dimen>
     <dimen name="medium_padding_8dp">8dp</dimen>
     <dimen name="large_padding_16dp">16dp</dimen>
     <dimen name="track_search_icon_45dp">45dp</dimen>
+    <dimen name="paddingErrorImage_80dp">80dp</dimen>
 </resources>

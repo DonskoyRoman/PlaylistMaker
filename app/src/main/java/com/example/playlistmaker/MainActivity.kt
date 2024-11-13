@@ -49,21 +49,3 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-
-// Подгружаем макет test.xml и добавляем его к основному контейнеру
-//        val inflater = LayoutInflater.from(this) // Инициализация inflater
-//        val testView = inflater.inflate(R.layout.test, null) // Загружаем test.xml в testView
-//
-//        val container = findViewById<LinearLayout>(R.id.main_container) // Основной контейнер в activity_main
-//        container.addView(testView) // Добавляем testView в контейнер
-//
-//        val image = testView.findViewById<ImageView>(R.id.poster) // Ищем ImageView в testView
-//val image = findViewById<ImageView>(R.id.poster)
-//
-//image.setOnClickListener {
-//    Toast.makeText(this@MainActivity, "Нажали на картинку!", Toast.LENGTH_SHORT).show()
-//}
-//  image.setBackgroundColor(getColor(R.color.black)) цвет
-//  image.scaleType = ImageView.ScaleType.CENTER_CROP масштаб
-// image.setImageResource(R.drawable.poster)  установить пикчу из ресов
-
