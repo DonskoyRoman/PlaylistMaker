@@ -22,10 +22,11 @@ class TrackAdapter(private var tracks: List<Track>, private val onItemClickListe
 
     override fun getItemCount() = tracks.size
 
-    fun setTracks(newTracks: List<Track>) {
-        tracks = newTracks
-        notifyDataSetChanged() // Обновляем адаптер после изменения списка
+    fun setTracks(updatedTracks: List<Track>) {
+        this.tracks = updatedTracks
+        notifyDataSetChanged()  // Перезагружаем список
     }
+
 
     inner class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val artworkImage: ImageView = itemView.findViewById(R.id.artworkImage)

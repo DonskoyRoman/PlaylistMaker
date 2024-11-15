@@ -42,13 +42,18 @@ class SearchActivity : AppCompatActivity() {
         Toast.makeText(this, "Track added to history: ${track.trackName}", Toast.LENGTH_SHORT).show()
     }
     private val trackHistoryAdapter = TrackAdapter(ArrayList()) { track ->
-        // Обработчик кликов для истории
-        val trackHistoryManager=TrackHistoryManager(this)
+        // Логика добавления трека в начало истории
+        val trackHistoryManager = TrackHistoryManager(this)
+
+        // Сохраняем трек в историю (в начало списка)
         trackHistoryManager.saveTrackToHistory(track)
 
-        Toast.makeText(this, "Now at the top: ${track.trackName}", Toast.LENGTH_SHORT).show()
-//        showTrackDetails(track)
+        // Перезагружаем историю
+        showTrackHistory()  // Это обновит данные в истории
+
+        Toast.makeText(this, "Track added to history: ${track.trackName}", Toast.LENGTH_SHORT).show()
     }
+
 
     private val api: ITunesApi = Retrofit.Builder()
         .baseUrl("https://itunes.apple.com/")
@@ -120,12 +125,15 @@ class SearchActivity : AppCompatActivity() {
             historyRecyclerView.visibility = View.VISIBLE
             trackListRecyclerView.visibility = View.GONE
             imageNoResultsError.visibility = View.GONE
+
+            // Обновляем список треков в адаптере
             trackHistoryAdapter.setTracks(trackHistory)
         }
 
         imageNetworkError.visibility = View.GONE
         refreshButton.visibility = View.GONE
     }
+
 
     private fun searchTracks(query: String) {
         tracks.clear()
