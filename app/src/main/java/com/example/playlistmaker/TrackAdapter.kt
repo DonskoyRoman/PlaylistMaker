@@ -9,8 +9,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
-class TrackAdapter(private var tracks: List<Track>) :
-    RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
+class TrackAdapter(private var tracks: List<Track>) : RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
+
+    interface OnItemClickListener {
+        fun onItemClick(track: Track)
+    }
+
+    fun setTracks(tracks: List<Track>) {
+        this.tracks = tracks
+        notifyDataSetChanged()
+    }
+
+    private var onItemClickListener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        onItemClickListener = listener
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_track, parent, false)
@@ -28,6 +42,11 @@ class TrackAdapter(private var tracks: List<Track>) :
         private val trackName: TextView = itemView.findViewById(R.id.trackName)
         private val artistName: TextView = itemView.findViewById(R.id.artistName)
         private val trackTimeMillis: TextView = itemView.findViewById(R.id.trackTime)
+        init {
+            itemView.setOnClickListener {
+                onItemClickListener?.onItemClick(tracks[adapterPosition])
+            }
+        }
 
         fun bind(track: Track) {
             trackName.text = track.trackName
@@ -42,9 +61,9 @@ class TrackAdapter(private var tracks: List<Track>) :
             val cornerRadius =
                 itemView.context.resources.getDimensionPixelSize(R.dimen.very_small_corner_radius)
 
-            val imageUrl = track.artworkUrl100
+            //val imageUrl = track.artworkUrl100
             Glide.with(itemView.context)
-                .load(imageUrl)
+                .load(track.artworkUrl100)
                 .transform(RoundedCorners(cornerRadius))
                 .placeholder(R.drawable.placeholder)
                 .error(R.drawable.placeholder)

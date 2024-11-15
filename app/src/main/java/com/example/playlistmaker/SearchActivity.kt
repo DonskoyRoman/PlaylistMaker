@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -21,6 +22,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import com.example.playlistmaker.TrackHistoryManager
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var queryInput: EditText
@@ -30,6 +32,9 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var clearIcon: ImageView
     private lateinit var refreshButton: Button
     private val tracks = ArrayList<Track>()
+//    private lateinit var searchViewModel: SearchViewModel
+//    private lateinit var adapter: TrackAdapter
+
     private val adapter = TrackAdapter(tracks)
     private val api: ITunesApi = Retrofit.Builder()
         .baseUrl("https://itunes.apple.com/")
@@ -57,22 +62,27 @@ class SearchActivity : AppCompatActivity() {
             queryInput.text.clear()
             clearIcon.visibility = View.GONE
         }
+        
 
-        queryInput.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {}
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                clearIcon.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
+        val trackHistoryManager = TrackHistoryManager(this)
+
+        adapter.setOnItemClickListener(object : TrackAdapter.OnItemClickListener {
+            override fun onItemClick(track: Track) {
+                trackHistoryManager.saveTrackToHistory(track)
+                Toast.makeText(this@SearchActivity, "$track trackAddedToHistory", Toast.LENGTH_SHORT).show()
             }
         })
 
         trackListRecyclerView.layoutManager = LinearLayoutManager(this)
         trackListRecyclerView.adapter = adapter
-
+//
         queryInput.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 if (queryInput.text.isNotEmpty()) {
                     searchTracks(queryInput.text.toString())
+
+                } else {
+                    showTrackHistory()
                 }
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(queryInput.windowToken, 0)
@@ -81,7 +91,6 @@ class SearchActivity : AppCompatActivity() {
                 false
             }
         }
-
         refreshButton.setOnClickListener { onRefreshClick() }
     }
 
@@ -90,7 +99,21 @@ class SearchActivity : AppCompatActivity() {
         imm.hideSoftInputFromWindow(queryInput.windowToken, 0)
     }
 
+    private fun showTrackHistory() {
+        val trackHistoryManager = TrackHistoryManager(this)
+        val trackHistory = trackHistoryManager.loadTrackHistory()
+        if (trackHistory.isEmpty()) {
+            imageNoResultsError.visibility = View.VISIBLE
+            trackListRecyclerView.visibility = View.GONE
+        } else {
+            imageNoResultsError.visibility = View.GONE
+            trackListRecyclerView.visibility = View.VISIBLE
+            adapter.setTracks(trackHistory)
+        }
+    }
+
     private fun searchTracks(query: String) {
+        Log.d("SearchActivity", "Searching for query: $query")
         tracks.clear()
         adapter.notifyDataSetChanged()
 
@@ -99,6 +122,7 @@ class SearchActivity : AppCompatActivity() {
                 call: Call<TrackSearchResponse>,
                 response: Response<TrackSearchResponse>
             ) {
+                Log.d("SearchActivity", "Received response: $response")
                 when (response.code()) {
                     200 -> {
                         val trackSearchResponse = response.body()
@@ -119,6 +143,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<TrackSearchResponse>, t: Throwable) {
+                Log.e("SearchActivity", "Error searching for tracks: $t")
                 showNetworkErrorSearchActivity("Ошибка сети")
             }
         })
@@ -129,6 +154,8 @@ class SearchActivity : AppCompatActivity() {
         imageNoResultsError.visibility = View.GONE
         imageNetworkError.visibility = View.GONE
         refreshButton.visibility = View.GONE
+
+        Toast.makeText(this, "showTracks", Toast.LENGTH_SHORT).show()
     }
 
     private fun showNoResultsErrorSearchActivity() {
