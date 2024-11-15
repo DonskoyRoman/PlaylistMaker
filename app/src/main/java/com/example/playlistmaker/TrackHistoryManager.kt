@@ -3,6 +3,7 @@ package com.example.playlistmaker
 // TrackHistoryManager.kt
 import android.content.Context
 import android.content.SharedPreferences
+import android.widget.Toast
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -15,6 +16,7 @@ class TrackHistoryManager(private val context: Context) {
         var trackHistory = loadTrackHistory()
         if (trackHistory.contains(track)) {
             trackHistory.remove(track)
+            Toast.makeText(context, "Track removed from history", Toast.LENGTH_SHORT).show()
         }
         trackHistory.add(0, track)
         if (trackHistory.size > 10) {

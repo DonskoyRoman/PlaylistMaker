@@ -9,22 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
-class TrackAdapter(private var tracks: List<Track>) : RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
-
-    interface OnItemClickListener {
-        fun onItemClick(track: Track)
-    }
-
-    fun setTracks(tracks: List<Track>) {
-        this.tracks = tracks
-        notifyDataSetChanged()
-    }
-
-    private var onItemClickListener: OnItemClickListener? = null
-
-    fun setOnItemClickListener(listener: OnItemClickListener) {
-        onItemClickListener = listener
-    }
+class TrackAdapter(private var tracks: List<Track>, private val onItemClickListener: (Track) -> Unit) : RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_track, parent, false)
@@ -37,16 +22,16 @@ class TrackAdapter(private var tracks: List<Track>) : RecyclerView.Adapter<Track
 
     override fun getItemCount() = tracks.size
 
+    fun setTracks(newTracks: List<Track>) {
+        tracks = newTracks
+        notifyDataSetChanged() // Обновляем адаптер после изменения списка
+    }
+
     inner class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val artworkImage: ImageView = itemView.findViewById(R.id.artworkImage)
         private val trackName: TextView = itemView.findViewById(R.id.trackName)
         private val artistName: TextView = itemView.findViewById(R.id.artistName)
         private val trackTimeMillis: TextView = itemView.findViewById(R.id.trackTime)
-        init {
-            itemView.setOnClickListener {
-                onItemClickListener?.onItemClick(tracks[adapterPosition])
-            }
-        }
 
         fun bind(track: Track) {
             trackName.text = track.trackName
@@ -57,21 +42,23 @@ class TrackAdapter(private var tracks: List<Track>) : RecyclerView.Adapter<Track
             val seconds = (durationInMillis / 1000) % 60
             trackTimeMillis.text = String.format("%d:%02d", minutes, seconds)
 
-
-            val cornerRadius =
-                itemView.context.resources.getDimensionPixelSize(R.dimen.very_small_corner_radius)
-
-            //val imageUrl = track.artworkUrl100
+            // Проверка и загрузка изображения с использованием Glide
+            val imageUrl = track.artworkUrl100
             Glide.with(itemView.context)
-                .load(track.artworkUrl100)
-                .transform(RoundedCorners(cornerRadius))
-                .placeholder(R.drawable.placeholder)
-                .error(R.drawable.placeholder)
+                .load(imageUrl)
+                .placeholder(R.drawable.placeholder) // Плейсхолдер, если изображение еще не загружено
+                .error(R.drawable.placeholder) // Плейсхолдер, если изображение не доступно
                 .into(artworkImage)
+
+            // Обработчик кликов по элементу
+            itemView.setOnClickListener {
+                onItemClickListener(track) // Вызываем функцию из активности или фрагмента
+            }
         }
     }
+
+    fun updateTracks(newTracks: List<Track>) {
+        tracks = newTracks
+        notifyDataSetChanged()
+    }
 }
-
-
-
-

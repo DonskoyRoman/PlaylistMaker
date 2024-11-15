@@ -27,15 +27,29 @@ import com.example.playlistmaker.TrackHistoryManager
 class SearchActivity : AppCompatActivity() {
     private lateinit var queryInput: EditText
     private lateinit var trackListRecyclerView: RecyclerView
+    private lateinit var historyRecyclerView: RecyclerView
     private lateinit var imageNoResultsError: LinearLayout
     private lateinit var imageNetworkError: LinearLayout
     private lateinit var clearIcon: ImageView
     private lateinit var refreshButton: Button
     private val tracks = ArrayList<Track>()
-//    private lateinit var searchViewModel: SearchViewModel
-//    private lateinit var adapter: TrackAdapter
 
-    private val adapter = TrackAdapter(tracks)
+    private val adapter = TrackAdapter(tracks) { track ->
+        // Обработчик кликов, например, открытие новой активности с детальной информацией о песне
+//        showTrackDetails(track)
+        val trackHistoryManager=TrackHistoryManager(this)
+        trackHistoryManager.saveTrackToHistory(track)
+        Toast.makeText(this, "Track added to history: ${track.trackName}", Toast.LENGTH_SHORT).show()
+    }
+    private val trackHistoryAdapter = TrackAdapter(ArrayList()) { track ->
+        // Обработчик кликов для истории
+        val trackHistoryManager=TrackHistoryManager(this)
+        trackHistoryManager.saveTrackToHistory(track)
+
+        Toast.makeText(this, "Now at the top: ${track.trackName}", Toast.LENGTH_SHORT).show()
+//        showTrackDetails(track)
+    }
+
     private val api: ITunesApi = Retrofit.Builder()
         .baseUrl("https://itunes.apple.com/")
         .addConverterFactory(GsonConverterFactory.create())
@@ -46,51 +60,45 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        val backButton: ImageView = findViewById(R.id.back_button)
-        backButton.setOnClickListener {
-            finish()
-        }
-
         queryInput = findViewById(R.id.inputEditText)
         trackListRecyclerView = findViewById(R.id.trackListRecyclerView)
+        historyRecyclerView = findViewById(R.id.historyRecyclerView)
         imageNoResultsError = findViewById(R.id.imageNoResultsErrorXML)
         imageNetworkError = findViewById(R.id.imageNetworkErrorXML)
         clearIcon = findViewById(R.id.clearIcon)
         refreshButton = findViewById(R.id.refreshButton)
 
+        trackListRecyclerView.layoutManager = LinearLayoutManager(this)
+        trackListRecyclerView.adapter = adapter
+
+        historyRecyclerView.layoutManager = LinearLayoutManager(this)
+        historyRecyclerView.adapter = trackHistoryAdapter
+
         clearIcon.setOnClickListener {
             queryInput.text.clear()
             clearIcon.visibility = View.GONE
+            showTrackHistory()  // Показываем историю, когда очищен запрос
         }
-        
 
-        val trackHistoryManager = TrackHistoryManager(this)
+//        val trackHistoryManager = TrackHistoryManager(this)
 
-        adapter.setOnItemClickListener(object : TrackAdapter.OnItemClickListener {
-            override fun onItemClick(track: Track) {
-                trackHistoryManager.saveTrackToHistory(track)
-                Toast.makeText(this@SearchActivity, "$track trackAddedToHistory", Toast.LENGTH_SHORT).show()
-            }
-        })
+        // Изначально показываем историю
+        showTrackHistory()
 
-        trackListRecyclerView.layoutManager = LinearLayoutManager(this)
-        trackListRecyclerView.adapter = adapter
-//
         queryInput.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 if (queryInput.text.isNotEmpty()) {
                     searchTracks(queryInput.text.toString())
-
                 } else {
                     showTrackHistory()
                 }
-                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(queryInput.windowToken, 0)
+                hideKeyboard()
                 true
             } else {
                 false
             }
         }
+
         refreshButton.setOnClickListener { onRefreshClick() }
     }
 
@@ -102,27 +110,36 @@ class SearchActivity : AppCompatActivity() {
     private fun showTrackHistory() {
         val trackHistoryManager = TrackHistoryManager(this)
         val trackHistory = trackHistoryManager.loadTrackHistory()
+
+        // Управляем видимостью двух RecyclerView
         if (trackHistory.isEmpty()) {
+            historyRecyclerView.visibility = View.GONE
             imageNoResultsError.visibility = View.VISIBLE
             trackListRecyclerView.visibility = View.GONE
         } else {
+            historyRecyclerView.visibility = View.VISIBLE
+            trackListRecyclerView.visibility = View.GONE
             imageNoResultsError.visibility = View.GONE
-            trackListRecyclerView.visibility = View.VISIBLE
-            adapter.setTracks(trackHistory)
+            trackHistoryAdapter.setTracks(trackHistory)
         }
+
+        imageNetworkError.visibility = View.GONE
+        refreshButton.visibility = View.GONE
     }
 
     private fun searchTracks(query: String) {
-        Log.d("SearchActivity", "Searching for query: $query")
         tracks.clear()
         adapter.notifyDataSetChanged()
+
+        // Управляем видимостью при поиске
+        trackListRecyclerView.visibility = View.VISIBLE
+        historyRecyclerView.visibility = View.GONE
 
         api.searchTracks(query).enqueue(object : Callback<TrackSearchResponse> {
             override fun onResponse(
                 call: Call<TrackSearchResponse>,
                 response: Response<TrackSearchResponse>
             ) {
-                Log.d("SearchActivity", "Received response: $response")
                 when (response.code()) {
                     200 -> {
                         val trackSearchResponse = response.body()
@@ -134,28 +151,27 @@ class SearchActivity : AppCompatActivity() {
                             showNoResultsErrorSearchActivity()
                         }
                     }
-
-                    400 -> showNetworkErrorSearchActivity("Неверный запрос")
-                    403 -> showNetworkErrorSearchActivity("Доступ запрещён")
-                    500 -> showNetworkErrorSearchActivity("Ошибка на сервере")
-                    else -> showNetworkErrorSearchActivity("Неизвестная ошибка")
+                    else -> showNetworkErrorSearchActivity("Ошибка сети")
                 }
             }
 
             override fun onFailure(call: Call<TrackSearchResponse>, t: Throwable) {
-                Log.e("SearchActivity", "Error searching for tracks: $t")
                 showNetworkErrorSearchActivity("Ошибка сети")
             }
         })
     }
+
+    private fun showTrackDetails(track: Track) {
+        // Логика для открытия экрана с подробной информацией о песне
+        Toast.makeText(this, "Track clicked: ${track.trackName}", Toast.LENGTH_SHORT).show()
+    }
+
 
     private fun showTracks() {
         trackListRecyclerView.visibility = View.VISIBLE
         imageNoResultsError.visibility = View.GONE
         imageNetworkError.visibility = View.GONE
         refreshButton.visibility = View.GONE
-
-        Toast.makeText(this, "showTracks", Toast.LENGTH_SHORT).show()
     }
 
     private fun showNoResultsErrorSearchActivity() {
