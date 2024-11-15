@@ -38,4 +38,9 @@ class TrackHistoryManager(private val context: Context) {
         val trackHistoryJson = gson.toJson(trackHistory)
         sharedPreferences.edit().putString("track_history", trackHistoryJson).apply()
     }
+    fun clearTrackHistory() {
+        val editor = sharedPreferences.edit()
+        editor.remove("track_history")
+        editor.apply()
+    }
 }

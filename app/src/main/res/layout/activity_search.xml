@@ -143,21 +143,23 @@
             android:textAppearance="?attr/textAppearanceHeadline6" />
     </LinearLayout>
 
+
     <LinearLayout
         android:id="@+id/containerRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <!-- Заголовок "Вы искали" -->
         <TextView
             android:id="@+id/searchHistoryTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            android:layout_marginTop="32dp"
             android:text="Вы искали"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:visibility="gone" />
+            style="@style/ErrorSearchActivityTextStyle"
+            android:visibility="gone"
+             />
 
         <!-- RecyclerView для истории -->
         <androidx.recyclerview.widget.RecyclerView
@@ -165,31 +167,35 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="13dp"
-            android:layout_marginTop="@dimen/large_padding_16dp"
-            android:layout_marginBottom="@dimen/large_padding_16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:layout_weight="1"
             android:visibility="gone" />
 
-
+        <!-- RecyclerView для списка треков -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/trackListRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="13dp"
-            android:layout_marginTop="@dimen/large_padding_16dp"
-            android:layout_marginBottom="@dimen/large_padding_16dp"
+            android:layout_marginTop="16dp"
             android:layout_weight="1"
-            android:visibility="gone" />
+            android:visibility="gone"
+            />
 
+        <!-- Кнопка очистки поиска -->
         <Button
-            android:id="@+id/clearSearchButton"
+            style="@style/RefreshButtonTextStyle"
+            android:id="@+id/clearHistoryButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:text="Очистить поиск"
-            android:visibility="gone" />
-
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="24dp"
+            android:visibility="gone"
+             />
     </LinearLayout>
+
 
 
 </LinearLayout>

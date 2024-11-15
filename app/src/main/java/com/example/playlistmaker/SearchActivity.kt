@@ -2,9 +2,6 @@ package com.example.playlistmaker
 
 import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -22,7 +19,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import com.example.playlistmaker.TrackHistoryManager
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var queryInput: EditText
@@ -32,6 +28,8 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var imageNetworkError: LinearLayout
     private lateinit var clearIcon: ImageView
     private lateinit var refreshButton: Button
+    private lateinit var searchHistoryTitle: TextView
+    private lateinit var clearHistoryButton: Button
     private val tracks = ArrayList<Track>()
 
     private val adapter = TrackAdapter(tracks) { track ->
@@ -72,6 +70,8 @@ class SearchActivity : AppCompatActivity() {
         imageNetworkError = findViewById(R.id.imageNetworkErrorXML)
         clearIcon = findViewById(R.id.clearIcon)
         refreshButton = findViewById(R.id.refreshButton)
+        searchHistoryTitle = findViewById(R.id.searchHistoryTitle)
+        clearHistoryButton = findViewById(R.id.clearHistoryButton)
 
         trackListRecyclerView.layoutManager = LinearLayoutManager(this)
         trackListRecyclerView.adapter = adapter
@@ -83,6 +83,18 @@ class SearchActivity : AppCompatActivity() {
             queryInput.text.clear()
             clearIcon.visibility = View.GONE
             showTrackHistory()  // Показываем историю, когда очищен запрос
+        }
+
+        clearHistoryButton.setOnClickListener {
+            // Очищаем историю из SharedPreferences
+            val trackHistoryManager = TrackHistoryManager(this)
+            trackHistoryManager.clearTrackHistory()
+
+            // Показываем тост
+            Toast.makeText(this, "История очищена", Toast.LENGTH_SHORT).show()
+
+            // Обновляем UI: скрываем RecyclerView для истории и показываем пустой экран
+            showTrackHistory()  // С этим методом история будет скрыта
         }
 
 //        val trackHistoryManager = TrackHistoryManager(this)
@@ -121,10 +133,17 @@ class SearchActivity : AppCompatActivity() {
             historyRecyclerView.visibility = View.GONE
             imageNoResultsError.visibility = View.VISIBLE
             trackListRecyclerView.visibility = View.GONE
+            searchHistoryTitle.visibility = View.GONE
+            clearHistoryButton.visibility = View.GONE
+
+
+
         } else {
+            searchHistoryTitle.visibility = View.VISIBLE
             historyRecyclerView.visibility = View.VISIBLE
             trackListRecyclerView.visibility = View.GONE
             imageNoResultsError.visibility = View.GONE
+            clearHistoryButton.visibility = View.VISIBLE
 
             // Обновляем список треков в адаптере
             trackHistoryAdapter.setTracks(trackHistory)
@@ -142,6 +161,10 @@ class SearchActivity : AppCompatActivity() {
         // Управляем видимостью при поиске
         trackListRecyclerView.visibility = View.VISIBLE
         historyRecyclerView.visibility = View.GONE
+        searchHistoryTitle.visibility = View.GONE
+        clearHistoryButton.visibility = View.GONE
+
+
 
         api.searchTracks(query).enqueue(object : Callback<TrackSearchResponse> {
             override fun onResponse(
@@ -180,6 +203,10 @@ class SearchActivity : AppCompatActivity() {
         imageNoResultsError.visibility = View.GONE
         imageNetworkError.visibility = View.GONE
         refreshButton.visibility = View.GONE
+        searchHistoryTitle.visibility = View.GONE
+        clearHistoryButton.visibility = View.GONE
+
+
     }
 
     private fun showNoResultsErrorSearchActivity() {
@@ -187,6 +214,10 @@ class SearchActivity : AppCompatActivity() {
         imageNoResultsError.visibility = View.VISIBLE
         imageNetworkError.visibility = View.GONE
         refreshButton.visibility = View.GONE
+        searchHistoryTitle.visibility = View.GONE
+        clearHistoryButton.visibility = View.GONE
+
+
     }
 
     private fun showNetworkErrorSearchActivity(message: String) {
@@ -194,6 +225,8 @@ class SearchActivity : AppCompatActivity() {
         imageNoResultsError.visibility = View.GONE
         imageNetworkError.visibility = View.VISIBLE
         refreshButton.visibility = View.VISIBLE
+        searchHistoryTitle.visibility = View.GONE
+        clearHistoryButton.visibility = View.GONE
 
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
