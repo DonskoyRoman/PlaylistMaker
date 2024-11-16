@@ -14,9 +14,9 @@ class TrackHistoryManager(private val context: Context) {
 
     fun saveTrackToHistory(track: Track) {
         var trackHistory = loadTrackHistory()
-        if (trackHistory.contains(track)) {
-            trackHistory.remove(track)
-            Toast.makeText(context, "Track removed from history", Toast.LENGTH_SHORT).show()
+        if (trackHistory.any { it.trackId == track.trackId }) {
+            trackHistory.removeAll { it.trackId == track.trackId }
+            Toast.makeText(context, "Трэк ${track.trackName} уже есть в истории", Toast.LENGTH_SHORT).show()
         }
         trackHistory.add(0, track)
         if (trackHistory.size > 10) {
@@ -24,6 +24,7 @@ class TrackHistoryManager(private val context: Context) {
         }
         saveTrackHistory(trackHistory)
     }
+
 
     fun loadTrackHistory(): MutableList<Track> {
         val trackHistoryJson = sharedPreferences.getString("track_history", "")
@@ -38,6 +39,7 @@ class TrackHistoryManager(private val context: Context) {
         val trackHistoryJson = gson.toJson(trackHistory)
         sharedPreferences.edit().putString("track_history", trackHistoryJson).apply()
     }
+
     fun clearTrackHistory() {
         val editor = sharedPreferences.edit()
         editor.remove("track_history")

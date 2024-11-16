@@ -150,18 +150,16 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- Заголовок "Вы искали" -->
         <TextView
             android:id="@+id/searchHistoryTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="Вы искали"
+            android:text="@string/You_ve_searched"
             style="@style/ErrorSearchActivityTextStyle"
             android:visibility="gone"
              />
 
-        <!-- RecyclerView для истории -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/historyRecyclerView"
             android:layout_width="match_parent"
@@ -172,7 +170,6 @@
             android:layout_weight="1"
             android:visibility="gone" />
 
-        <!-- RecyclerView для списка треков -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/trackListRecyclerView"
             android:layout_width="match_parent"
@@ -183,13 +180,12 @@
             android:visibility="gone"
             />
 
-        <!-- Кнопка очистки поиска -->
         <Button
             style="@style/RefreshButtonTextStyle"
             android:id="@+id/clearHistoryButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Очистить поиск"
+            android:text="@string/Clear_history"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
             android:visibility="gone"

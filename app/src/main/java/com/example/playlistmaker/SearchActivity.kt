@@ -2,6 +2,8 @@ package com.example.playlistmaker
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -30,26 +32,23 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var refreshButton: Button
     private lateinit var searchHistoryTitle: TextView
     private lateinit var clearHistoryButton: Button
+
     private val tracks = ArrayList<Track>()
 
     private val adapter = TrackAdapter(tracks) { track ->
-        // Обработчик кликов, например, открытие новой активности с детальной информацией о песне
-//        showTrackDetails(track)
-        val trackHistoryManager=TrackHistoryManager(this)
+        val trackHistoryManager = TrackHistoryManager(this)
         trackHistoryManager.saveTrackToHistory(track)
-        Toast.makeText(this, "Track added to history: ${track.trackName}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Трэк добавлен в историю: ${track.trackName}", Toast.LENGTH_SHORT)
+            .show()
     }
     private val trackHistoryAdapter = TrackAdapter(ArrayList()) { track ->
-        // Логика добавления трека в начало истории
+
         val trackHistoryManager = TrackHistoryManager(this)
 
-        // Сохраняем трек в историю (в начало списка)
         trackHistoryManager.saveTrackToHistory(track)
 
-        // Перезагружаем историю
-        showTrackHistory()  // Это обновит данные в истории
+        showTrackHistory()
 
-        Toast.makeText(this, "Track added to history: ${track.trackName}", Toast.LENGTH_SHORT).show()
     }
 
 
@@ -72,6 +71,10 @@ class SearchActivity : AppCompatActivity() {
         refreshButton = findViewById(R.id.refreshButton)
         searchHistoryTitle = findViewById(R.id.searchHistoryTitle)
         clearHistoryButton = findViewById(R.id.clearHistoryButton)
+        val backButton = findViewById<ImageView>(R.id.back_button)
+        backButton.setOnClickListener {
+            finish()
+        }
 
         trackListRecyclerView.layoutManager = LinearLayoutManager(this)
         trackListRecyclerView.adapter = adapter
@@ -82,25 +85,31 @@ class SearchActivity : AppCompatActivity() {
         clearIcon.setOnClickListener {
             queryInput.text.clear()
             clearIcon.visibility = View.GONE
-            showTrackHistory()  // Показываем историю, когда очищен запрос
+            showTrackHistory()
         }
 
         clearHistoryButton.setOnClickListener {
-            // Очищаем историю из SharedPreferences
+
             val trackHistoryManager = TrackHistoryManager(this)
             trackHistoryManager.clearTrackHistory()
-
-            // Показываем тост
             Toast.makeText(this, "История очищена", Toast.LENGTH_SHORT).show()
-
-            // Обновляем UI: скрываем RecyclerView для истории и показываем пустой экран
-            showTrackHistory()  // С этим методом история будет скрыта
+            showTrackHistory()
         }
 
-//        val trackHistoryManager = TrackHistoryManager(this)
-
-        // Изначально показываем историю
         showTrackHistory()
+
+        queryInput.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                if (s.isNullOrEmpty()) {
+                    clearIcon.visibility = View.GONE
+                } else {
+                    clearIcon.visibility = View.VISIBLE
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
 
         queryInput.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -128,14 +137,12 @@ class SearchActivity : AppCompatActivity() {
         val trackHistoryManager = TrackHistoryManager(this)
         val trackHistory = trackHistoryManager.loadTrackHistory()
 
-        // Управляем видимостью двух RecyclerView
         if (trackHistory.isEmpty()) {
             historyRecyclerView.visibility = View.GONE
             imageNoResultsError.visibility = View.VISIBLE
             trackListRecyclerView.visibility = View.GONE
             searchHistoryTitle.visibility = View.GONE
             clearHistoryButton.visibility = View.GONE
-
 
 
         } else {
@@ -145,7 +152,7 @@ class SearchActivity : AppCompatActivity() {
             imageNoResultsError.visibility = View.GONE
             clearHistoryButton.visibility = View.VISIBLE
 
-            // Обновляем список треков в адаптере
+
             trackHistoryAdapter.setTracks(trackHistory)
         }
 
@@ -158,13 +165,10 @@ class SearchActivity : AppCompatActivity() {
         tracks.clear()
         adapter.notifyDataSetChanged()
 
-        // Управляем видимостью при поиске
         trackListRecyclerView.visibility = View.VISIBLE
         historyRecyclerView.visibility = View.GONE
         searchHistoryTitle.visibility = View.GONE
         clearHistoryButton.visibility = View.GONE
-
-
 
         api.searchTracks(query).enqueue(object : Callback<TrackSearchResponse> {
             override fun onResponse(
@@ -182,21 +186,19 @@ class SearchActivity : AppCompatActivity() {
                             showNoResultsErrorSearchActivity()
                         }
                     }
-                    else -> showNetworkErrorSearchActivity("Ошибка сети")
+
+                    400 -> showNetworkErrorSearchActivity(R.string.error400.toString())
+                    403 -> showNetworkErrorSearchActivity(R.string.error403.toString())
+                    500 -> showNetworkErrorSearchActivity(R.string.error500.toString())
+                    else -> showNetworkErrorSearchActivity(R.string.errorUnknown.toString())
                 }
             }
 
             override fun onFailure(call: Call<TrackSearchResponse>, t: Throwable) {
-                showNetworkErrorSearchActivity("Ошибка сети")
+                showNetworkErrorSearchActivity(R.string.errorNetwork.toString())
             }
         })
     }
-
-    private fun showTrackDetails(track: Track) {
-        // Логика для открытия экрана с подробной информацией о песне
-        Toast.makeText(this, "Track clicked: ${track.trackName}", Toast.LENGTH_SHORT).show()
-    }
-
 
     private fun showTracks() {
         trackListRecyclerView.visibility = View.VISIBLE

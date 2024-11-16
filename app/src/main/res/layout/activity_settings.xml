@@ -36,12 +36,14 @@
             android:text="@string/Settings" />
     </LinearLayout>
 
-    <Switch
-        android:id="@+id/nightThemeSwitch"
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/themeSwitcher"
         style="@style/SettingsMenuButtons"
-        android:layout_width="match_parent"
         android:text="@string/dark_theme"
-
+        android:layout_marginHorizontal="60dp"
+        android:layout_gravity="start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <TextView

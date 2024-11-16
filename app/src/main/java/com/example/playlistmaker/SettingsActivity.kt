@@ -10,6 +10,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 
 class SettingsActivity : AppCompatActivity() {
@@ -27,6 +28,16 @@ class SettingsActivity : AppCompatActivity() {
             finish()
         }
 
+        val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
+
+        val prefs = getSharedPreferences("theme_prefs", MODE_PRIVATE)
+        val isDarkTheme = prefs.getBoolean("dark_theme", false)
+        themeSwitcher.isChecked = isDarkTheme
+
+        themeSwitcher.setOnCheckedChangeListener { _, checked ->
+            (applicationContext as App).switchTheme(checked)
+        }
+
         shareButton.setOnClickListener {
             val shareIntent = Intent(Intent.ACTION_SEND).apply {
                 type = "text/plain"
@@ -34,7 +45,6 @@ class SettingsActivity : AppCompatActivity() {
             }
             startActivity(Intent.createChooser(shareIntent, null))
         }
-
 
         supportButton.setOnClickListener {
             val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
@@ -45,7 +55,6 @@ class SettingsActivity : AppCompatActivity() {
             }
             startActivity(emailIntent)
         }
-
 
         agreementButton.setOnClickListener {
             val browserIntent =

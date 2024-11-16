@@ -24,9 +24,8 @@ class TrackAdapter(private var tracks: List<Track>, private val onItemClickListe
 
     fun setTracks(updatedTracks: List<Track>) {
         this.tracks = updatedTracks
-        notifyDataSetChanged()  // Перезагружаем список
+        notifyDataSetChanged()
     }
-
 
 
     inner class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -44,23 +43,21 @@ class TrackAdapter(private var tracks: List<Track>, private val onItemClickListe
             val seconds = (durationInMillis / 1000) % 60
             trackTimeMillis.text = String.format("%d:%02d", minutes, seconds)
 
-            // Проверка и загрузка изображения с использованием Glide
+            val cornerRadius =
+                itemView.context.resources.getDimensionPixelSize(R.dimen.very_small_corner_radius)
+
             val imageUrl = track.artworkUrl100
             Glide.with(itemView.context)
                 .load(imageUrl)
-                .placeholder(R.drawable.placeholder) // Плейсхолдер, если изображение еще не загружено
-                .error(R.drawable.placeholder) // Плейсхолдер, если изображение не доступно
+                .transform(RoundedCorners(cornerRadius))
+                .placeholder(R.drawable.placeholder)
+                .error(R.drawable.placeholder)
                 .into(artworkImage)
 
-            // Обработчик кликов по элементу
+
             itemView.setOnClickListener {
-                onItemClickListener(track) // Вызываем функцию из активности или фрагмента
+                onItemClickListener(track)
             }
         }
-    }
-
-    fun updateTracks(newTracks: List<Track>) {
-        tracks = newTracks
-        notifyDataSetChanged()
     }
 }
