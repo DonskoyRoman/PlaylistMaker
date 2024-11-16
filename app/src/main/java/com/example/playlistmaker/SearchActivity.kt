@@ -14,6 +14,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
@@ -100,11 +101,12 @@ class SearchActivity : AppCompatActivity() {
 
         queryInput.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                if (s.isNullOrEmpty()) {
-                    clearIcon.visibility = View.GONE
-                } else {
-                    clearIcon.visibility = View.VISIBLE
-                }
+                clearIcon.isVisible= !s.isNullOrEmpty()
+//                if (s.isNullOrEmpty()) {
+//                    clearIcon.visibility = View.GONE
+//                } else {
+//                    clearIcon.visibility = View.VISIBLE
+//                }
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
