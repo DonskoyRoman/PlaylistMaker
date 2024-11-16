@@ -99,7 +99,7 @@ class SearchActivity : AppCompatActivity() {
 
         showTrackHistory()
 
-        
+
         queryInput.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 clearIcon.isVisible= !s.isNullOrEmpty()
