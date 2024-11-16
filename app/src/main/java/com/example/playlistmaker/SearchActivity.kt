@@ -25,12 +25,33 @@ import retrofit2.converter.gson.GsonConverterFactory
 class SearchActivity : AppCompatActivity() {
     private lateinit var queryInput: EditText
     private lateinit var trackListRecyclerView: RecyclerView
+    private lateinit var historyRecyclerView: RecyclerView
     private lateinit var imageNoResultsError: LinearLayout
     private lateinit var imageNetworkError: LinearLayout
     private lateinit var clearIcon: ImageView
     private lateinit var refreshButton: Button
+    private lateinit var searchHistoryTitle: TextView
+    private lateinit var clearHistoryButton: Button
+
     private val tracks = ArrayList<Track>()
-    private val adapter = TrackAdapter(tracks)
+
+    private val adapter = TrackAdapter(tracks) { track ->
+        val trackHistoryManager = TrackHistoryManager(this)
+        trackHistoryManager.saveTrackToHistory(track)
+        Toast.makeText(this, "Трэк добавлен в историю: ${track.trackName}", Toast.LENGTH_SHORT)
+            .show()
+    }
+    private val trackHistoryAdapter = TrackAdapter(ArrayList()) { track ->
+
+        val trackHistoryManager = TrackHistoryManager(this)
+
+        trackHistoryManager.saveTrackToHistory(track)
+
+        showTrackHistory()
+
+    }
+
+
     private val api: ITunesApi = Retrofit.Builder()
         .baseUrl("https://itunes.apple.com/")
         .addConverterFactory(GsonConverterFactory.create())
@@ -41,41 +62,63 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        val backButton: ImageView = findViewById(R.id.back_button)
-        backButton.setOnClickListener {
-            finish()
-        }
-
         queryInput = findViewById(R.id.inputEditText)
         trackListRecyclerView = findViewById(R.id.trackListRecyclerView)
+        historyRecyclerView = findViewById(R.id.historyRecyclerView)
         imageNoResultsError = findViewById(R.id.imageNoResultsErrorXML)
         imageNetworkError = findViewById(R.id.imageNetworkErrorXML)
         clearIcon = findViewById(R.id.clearIcon)
         refreshButton = findViewById(R.id.refreshButton)
+        searchHistoryTitle = findViewById(R.id.searchHistoryTitle)
+        clearHistoryButton = findViewById(R.id.clearHistoryButton)
+        val backButton = findViewById<ImageView>(R.id.back_button)
+        backButton.setOnClickListener {
+            finish()
+        }
+
+        trackListRecyclerView.layoutManager = LinearLayoutManager(this)
+        trackListRecyclerView.adapter = adapter
+
+        historyRecyclerView.layoutManager = LinearLayoutManager(this)
+        historyRecyclerView.adapter = trackHistoryAdapter
 
         clearIcon.setOnClickListener {
             queryInput.text.clear()
             clearIcon.visibility = View.GONE
+            showTrackHistory()
         }
 
-        queryInput.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {}
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                clearIcon.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
-            }
-        })
+        clearHistoryButton.setOnClickListener {
 
-        trackListRecyclerView.layoutManager = LinearLayoutManager(this)
-        trackListRecyclerView.adapter = adapter
+            val trackHistoryManager = TrackHistoryManager(this)
+            trackHistoryManager.clearTrackHistory()
+            Toast.makeText(this, "История очищена", Toast.LENGTH_SHORT).show()
+            showTrackHistory()
+        }
+
+        showTrackHistory()
+
+        queryInput.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                if (s.isNullOrEmpty()) {
+                    clearIcon.visibility = View.GONE
+                } else {
+                    clearIcon.visibility = View.VISIBLE
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
 
         queryInput.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 if (queryInput.text.isNotEmpty()) {
                     searchTracks(queryInput.text.toString())
+                } else {
+                    showTrackHistory()
                 }
-                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(queryInput.windowToken, 0)
+                hideKeyboard()
                 true
             } else {
                 false
@@ -90,9 +133,42 @@ class SearchActivity : AppCompatActivity() {
         imm.hideSoftInputFromWindow(queryInput.windowToken, 0)
     }
 
+    private fun showTrackHistory() {
+        val trackHistoryManager = TrackHistoryManager(this)
+        val trackHistory = trackHistoryManager.loadTrackHistory()
+
+        if (trackHistory.isEmpty()) {
+            historyRecyclerView.visibility = View.GONE
+            imageNoResultsError.visibility = View.VISIBLE
+            trackListRecyclerView.visibility = View.GONE
+            searchHistoryTitle.visibility = View.GONE
+            clearHistoryButton.visibility = View.GONE
+
+
+        } else {
+            searchHistoryTitle.visibility = View.VISIBLE
+            historyRecyclerView.visibility = View.VISIBLE
+            trackListRecyclerView.visibility = View.GONE
+            imageNoResultsError.visibility = View.GONE
+            clearHistoryButton.visibility = View.VISIBLE
+
+
+            trackHistoryAdapter.setTracks(trackHistory)
+        }
+
+        imageNetworkError.visibility = View.GONE
+        refreshButton.visibility = View.GONE
+    }
+
+
     private fun searchTracks(query: String) {
         tracks.clear()
         adapter.notifyDataSetChanged()
+
+        trackListRecyclerView.visibility = View.VISIBLE
+        historyRecyclerView.visibility = View.GONE
+        searchHistoryTitle.visibility = View.GONE
+        clearHistoryButton.visibility = View.GONE
 
         api.searchTracks(query).enqueue(object : Callback<TrackSearchResponse> {
             override fun onResponse(
@@ -111,15 +187,15 @@ class SearchActivity : AppCompatActivity() {
                         }
                     }
 
-                    400 -> showNetworkErrorSearchActivity("Неверный запрос")
-                    403 -> showNetworkErrorSearchActivity("Доступ запрещён")
-                    500 -> showNetworkErrorSearchActivity("Ошибка на сервере")
-                    else -> showNetworkErrorSearchActivity("Неизвестная ошибка")
+                    400 -> showNetworkErrorSearchActivity(R.string.error400.toString())
+                    403 -> showNetworkErrorSearchActivity(R.string.error403.toString())
+                    500 -> showNetworkErrorSearchActivity(R.string.error500.toString())
+                    else -> showNetworkErrorSearchActivity(R.string.errorUnknown.toString())
                 }
             }
 
             override fun onFailure(call: Call<TrackSearchResponse>, t: Throwable) {
-                showNetworkErrorSearchActivity("Ошибка сети")
+                showNetworkErrorSearchActivity(R.string.errorNetwork.toString())
             }
         })
     }
@@ -129,6 +205,10 @@ class SearchActivity : AppCompatActivity() {
         imageNoResultsError.visibility = View.GONE
         imageNetworkError.visibility = View.GONE
         refreshButton.visibility = View.GONE
+        searchHistoryTitle.visibility = View.GONE
+        clearHistoryButton.visibility = View.GONE
+
+
     }
 
     private fun showNoResultsErrorSearchActivity() {
@@ -136,6 +216,10 @@ class SearchActivity : AppCompatActivity() {
         imageNoResultsError.visibility = View.VISIBLE
         imageNetworkError.visibility = View.GONE
         refreshButton.visibility = View.GONE
+        searchHistoryTitle.visibility = View.GONE
+        clearHistoryButton.visibility = View.GONE
+
+
     }
 
     private fun showNetworkErrorSearchActivity(message: String) {
@@ -143,6 +227,8 @@ class SearchActivity : AppCompatActivity() {
         imageNoResultsError.visibility = View.GONE
         imageNetworkError.visibility = View.VISIBLE
         refreshButton.visibility = View.VISIBLE
+        searchHistoryTitle.visibility = View.GONE
+        clearHistoryButton.visibility = View.GONE
 
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
