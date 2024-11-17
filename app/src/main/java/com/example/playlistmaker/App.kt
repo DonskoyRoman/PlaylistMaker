@@ -12,16 +12,16 @@ class App : Application() {
         loadTheme()
     }
     private fun loadTheme() {
-        val prefs = getSharedPreferences("theme_prefs", MODE_PRIVATE)
-        darkTheme = prefs.getBoolean("dark_theme", false)
+        val prefs = getSharedPreferences(Const.PREFS_NAME, MODE_PRIVATE)
+        darkTheme = prefs.getBoolean(Const.KEY_DARK_THEME, false)
         setTheme(darkTheme)
     }
 
     fun switchTheme(darkThemeEnabled: Boolean) {
         darkTheme = darkThemeEnabled
-        val prefs = getSharedPreferences("theme_prefs", MODE_PRIVATE)
+        val prefs = getSharedPreferences(Const.PREFS_NAME, MODE_PRIVATE)
         with(prefs.edit()) {
-            putBoolean("dark_theme", darkTheme)
+            putBoolean(Const.KEY_DARK_THEME, darkTheme)
             apply()
         }
 

@@ -30,8 +30,8 @@ class SettingsActivity : AppCompatActivity() {
 
         val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
 
-        val prefs = getSharedPreferences("theme_prefs", MODE_PRIVATE)
-        val isDarkTheme = prefs.getBoolean("dark_theme", false)
+        val prefs = getSharedPreferences(Const.PREFS_NAME, MODE_PRIVATE)
+        val isDarkTheme = prefs.getBoolean(Const.KEY_DARK_THEME, false)
         themeSwitcher.isChecked = isDarkTheme
 
         themeSwitcher.setOnCheckedChangeListener { _, checked ->

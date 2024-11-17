@@ -22,4 +22,8 @@
     <color name="Error_textGrayWhite">#1A1B22</color>
     <color name="refresh_button_background">#FFFFFF</color>
 
+
+    <color name="values_color">#FFFFFFFF</color>
+
+
 </resources>

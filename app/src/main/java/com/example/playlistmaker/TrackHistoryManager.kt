@@ -1,6 +1,5 @@
 package com.example.playlistmaker
 
-// TrackHistoryManager.kt
 import android.content.Context
 import android.content.SharedPreferences
 import android.widget.Toast
@@ -9,7 +8,7 @@ import com.google.gson.reflect.TypeToken
 
 class TrackHistoryManager(private val context: Context) {
     private val sharedPreferences: SharedPreferences =
-        context.getSharedPreferences("track_history", Context.MODE_PRIVATE)
+        context.getSharedPreferences(Const.TRACK_HISTORY, Context.MODE_PRIVATE)
     private val gson = Gson()
 
     fun saveTrackToHistory(track: Track) {
@@ -20,14 +19,14 @@ class TrackHistoryManager(private val context: Context) {
         }
         trackHistory.add(0, track)
         if (trackHistory.size > 10) {
-            trackHistory = trackHistory.subList(0, 10)
+            trackHistory = trackHistory.subList(0, 9)
         }
         saveTrackHistory(trackHistory)
     }
 
 
     fun loadTrackHistory(): MutableList<Track> {
-        val trackHistoryJson = sharedPreferences.getString("track_history", "")
+        val trackHistoryJson = sharedPreferences.getString(Const.TRACK_HISTORY, "")
         return if (trackHistoryJson.isNullOrEmpty()) {
             mutableListOf()
         } else {
@@ -37,12 +36,12 @@ class TrackHistoryManager(private val context: Context) {
 
     private fun saveTrackHistory(trackHistory: MutableList<Track>) {
         val trackHistoryJson = gson.toJson(trackHistory)
-        sharedPreferences.edit().putString("track_history", trackHistoryJson).apply()
+        sharedPreferences.edit().putString(Const.TRACK_HISTORY, trackHistoryJson).apply()
     }
 
     fun clearTrackHistory() {
         val editor = sharedPreferences.edit()
-        editor.remove("track_history")
+        editor.remove(Const.TRACK_HISTORY)
         editor.apply()
     }
 }
