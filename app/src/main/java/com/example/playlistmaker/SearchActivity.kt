@@ -76,7 +76,6 @@ class SearchActivity : AppCompatActivity() {
         backButton.setOnClickListener {
             finish()
         }
-
         trackListRecyclerView.layoutManager = LinearLayoutManager(this)
         trackListRecyclerView.adapter = adapter
 
@@ -103,11 +102,6 @@ class SearchActivity : AppCompatActivity() {
         queryInput.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 clearIcon.isVisible= !s.isNullOrEmpty()
-//                if (s.isNullOrEmpty()) {
-//                    clearIcon.visibility = View.GONE
-//                } else {
-//                    clearIcon.visibility = View.VISIBLE
-//                }
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -190,15 +184,15 @@ class SearchActivity : AppCompatActivity() {
                         }
                     }
 
-                    400 -> showNetworkErrorSearchActivity(R.string.error400.toString())
-                    403 -> showNetworkErrorSearchActivity(R.string.error403.toString())
-                    500 -> showNetworkErrorSearchActivity(R.string.error500.toString())
-                    else -> showNetworkErrorSearchActivity(R.string.errorUnknown.toString())
+                    400 -> showNetworkErrorSearchActivity(getString(R.string.error400))
+                    403 -> showNetworkErrorSearchActivity(getString(R.string.error403))
+                    500 -> showNetworkErrorSearchActivity(getString(R.string.error500))
+                    else -> showNetworkErrorSearchActivity(getString(R.string.errorUnknown))
                 }
             }
 
             override fun onFailure(call: Call<TrackSearchResponse>, t: Throwable) {
-                showNetworkErrorSearchActivity(R.string.errorNetwork.toString())
+                showNetworkErrorSearchActivity(getString(R.string.errorUnknown))
             }
         })
     }
