@@ -1,6 +1,7 @@
 package com.example.playlistmaker
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -36,12 +37,15 @@ class SearchActivity : AppCompatActivity() {
 
     private val tracks = ArrayList<Track>()
 
-    private val adapter = TrackAdapter(tracks) { track ->
+    val adapter = TrackAdapter(tracks) { track ->
         val trackHistoryManager = TrackHistoryManager(this)
         trackHistoryManager.saveTrackToHistory(track)
+
         Toast.makeText(this, "Трэк добавлен в историю: ${track.trackName}", Toast.LENGTH_SHORT)
             .show()
     }
+
+
     private val trackHistoryAdapter = TrackAdapter(ArrayList()) { track ->
 
         val trackHistoryManager = TrackHistoryManager(this)
@@ -101,7 +105,7 @@ class SearchActivity : AppCompatActivity() {
 
         queryInput.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                clearIcon.isVisible= !s.isNullOrEmpty()
+                clearIcon.isVisible = !s.isNullOrEmpty()
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
