@@ -23,5 +23,12 @@
     <string name="networkErrorText2">Загрузка не удалась. Проверьте подключение к интернету</string>
     <string name="NoResultsErrorText">Ничего не нашлось</string>
     <string name="reloadButton">Обновить</string>
+    <string name="error400">Неверный запрос</string>
+    <string name="error403">Доступ запрещен</string>
+    <string name="error500">Ошибка на сервере</string>
+    <string name="errorUnknown">Неизвестная ошибка</string>
+    <string name="errorNetwork">Ошибка сети</string>
+    <string name="You_ve_searched">Вы искали</string>
+    <string name="Clear_history">Очистить историю</string>
 
 </resources>
