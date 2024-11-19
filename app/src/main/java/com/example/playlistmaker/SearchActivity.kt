@@ -75,8 +75,9 @@ class SearchActivity : AppCompatActivity() {
         refreshButton = findViewById(R.id.refreshButton)
         searchHistoryTitle = findViewById(R.id.searchHistoryTitle)
         clearHistoryButton = findViewById(R.id.clearHistoryButton)
-        val backButton = findViewById<ImageView>(R.id.back_button)
-        backButton.setOnClickListener {
+
+        val toolbarSearch = findViewById<androidx.appcompat.widget.Toolbar?>(R.id.back_button)
+        toolbarSearch.setNavigationOnClickListener {
             finish()
         }
         trackListRecyclerView.layoutManager = LinearLayoutManager(this)
