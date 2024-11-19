@@ -31,4 +31,27 @@
     <string name="You_ve_searched">Вы искали</string>
     <string name="Clear_history">Очистить историю</string>
 
+
+
+    <!--audioplayer-->
+
+    <string name="country_title">Страна</string>
+    <string name="genre_title">Жанр</string>
+    <string name="year_title">Год</string>
+    <string name="album_title">Альбом</string>
+    <string name="duration_title">Длительность</string>
+
+    <string name="country_check_value">Japan</string>
+    <string name="genre_check_value">J-Rock</string>
+    <string name="year_check_value">2017</string>
+    <string name="album_check_value">Kinjito</string>
+    <string name="duration_check_value">3:22</string>
+
+    <string name="track_duration_check_value">00:00</string>
+
+    <string name="play_button_description">Воспроизведение</string>
+    <string name="add_button_description">Добавить</string>
+    <string name="favorites_button_description">Избранное</string>
+    <string name="arrow_back_button_description">Назад</string>
+
 </resources>

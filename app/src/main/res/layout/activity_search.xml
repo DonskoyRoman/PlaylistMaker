@@ -8,41 +8,24 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <LinearLayout
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/back_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/small_padding_4dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/button_padding">
-
-        <ImageView
-            android:id="@+id/back_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/arrow_left"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-            android:padding="8dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_arrow_left"
-            app:tint="@color/black" />
-
-        <TextView
-            style="@style/HeaderTextStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/Search" />
-    </LinearLayout>
+        android:contentDescription="@string/arrow_left"
+        android:padding="8dp"
+        app:navigationIcon="@drawable/ic_arrow_left"
+        app:tint="@color/black"
+        app:title="@string/Search"
+        app:titleTextAppearance="@style/HeaderTextStyle" />
 
 
     <LinearLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/large_padding_16dp"
+        android:layout_marginHorizontal="@dimen/large_padding_16dp"
         android:background="@drawable/rounded_corners"
         android:orientation="horizontal"
         tools:context=".MainActivity">
@@ -152,13 +135,12 @@
 
         <TextView
             android:id="@+id/searchHistoryTitle"
+            style="@style/ErrorSearchActivityTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:text="@string/You_ve_searched"
-            style="@style/ErrorSearchActivityTextStyle"
-            android:visibility="gone"
-             />
+            android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/historyRecyclerView"
@@ -177,21 +159,18 @@
             android:layout_marginStart="13dp"
             android:layout_marginTop="16dp"
             android:layout_weight="1"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
 
         <Button
-            style="@style/RefreshButtonTextStyle"
             android:id="@+id/clearHistoryButton"
+            style="@style/RefreshButtonTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/Clear_history"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
-            android:visibility="gone"
-             />
+            android:text="@string/Clear_history"
+            android:visibility="gone" />
     </LinearLayout>
-
 
 
 </LinearLayout>

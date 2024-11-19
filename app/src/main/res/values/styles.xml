@@ -15,7 +15,7 @@
         <item name="android:textSize">22sp</item>
         <item name="android:textFontWeight">500</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
-        <item name="android:padding">16dp</item>
+        <item name="android:padding">8dp</item>
     </style>
 
     <style name="ErrorSearchActivityTextStyle">
@@ -25,6 +25,39 @@
         <item name="android:textFontWeight">400</item>
         <item name="android:gravity">center</item>
 
+    </style>
+
+    <style name="TrackValuesTextViewStyle">
+        <item name="android:gravity">start</item>
+        <item name="android:textColor">@color/values_color</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">400</item>
+    </style>
+
+    <style name="TrackInfoTitlesTextViewStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textSize">@dimen/track_info_size</item>
+    </style>
+
+    <style name="TrackInfoValuesTextViewStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">end</item>
+        <item name="android:textColor">@color/values_color</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:layout_marginBottom">@dimen/track_info_values_margin</item>
+        <item name="android:textSize">@dimen/track_info_size</item>
+    </style>
+
+    <style name="SmallButtonsStyle">
+        <item name="android:layout_width">@dimen/small_buttons_width</item>
+        <item name="android:layout_height">@dimen/small_buttons_height</item>
+        <item name="android:background">@null</item>
     </style>
 
 

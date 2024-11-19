@@ -16,4 +16,12 @@
     <dimen name="large_padding_16dp">16dp</dimen>
     <dimen name="track_search_icon_45dp">45dp</dimen>
     <dimen name="paddingErrorImage_80dp">80dp</dimen>
+
+    <dimen name="guidelines_1_margin">16dp</dimen>
+    <dimen name="guidelines_2_margin">24dp</dimen>
+    <dimen name="track_info_size">13sp</dimen>
+    <dimen name="track_info_values_margin">17dp</dimen>
+    <dimen name="small_buttons_width">51dp</dimen>
+    <dimen name="small_buttons_height">51dp</dimen>
+    <dimen name="cover_image_radius">8dp</dimen>
 </resources>
