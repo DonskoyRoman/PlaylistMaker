@@ -1,7 +1,6 @@
 package com.example.playlistmaker
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -106,6 +105,14 @@ class SearchActivity : AppCompatActivity() {
         queryInput.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 clearIcon.isVisible = !s.isNullOrEmpty()
+                if (s.isNullOrEmpty()) {
+                    showTrackHistory()
+                } else {
+                    trackListRecyclerView.visibility = View.GONE
+                    historyRecyclerView.visibility = View.GONE
+                    searchHistoryTitle.visibility = View.GONE
+                    clearHistoryButton.visibility = View.GONE
+                }
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -140,7 +147,7 @@ class SearchActivity : AppCompatActivity() {
 
         if (trackHistory.isEmpty()) {
             historyRecyclerView.visibility = View.GONE
-            imageNoResultsError.visibility = View.VISIBLE
+            imageNoResultsError.visibility = View.GONE
             trackListRecyclerView.visibility = View.GONE
             searchHistoryTitle.visibility = View.GONE
             clearHistoryButton.visibility = View.GONE
