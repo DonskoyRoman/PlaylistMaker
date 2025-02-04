@@ -36,12 +36,15 @@ class SearchActivity : AppCompatActivity() {
 
     private val tracks = ArrayList<Track>()
 
-    private val adapter = TrackAdapter(tracks) { track ->
+    val adapter = TrackAdapter(tracks) { track ->
         val trackHistoryManager = TrackHistoryManager(this)
         trackHistoryManager.saveTrackToHistory(track)
+
         Toast.makeText(this, "Трэк добавлен в историю: ${track.trackName}", Toast.LENGTH_SHORT)
             .show()
     }
+
+
     private val trackHistoryAdapter = TrackAdapter(ArrayList()) { track ->
 
         val trackHistoryManager = TrackHistoryManager(this)
@@ -72,8 +75,9 @@ class SearchActivity : AppCompatActivity() {
         refreshButton = findViewById(R.id.refreshButton)
         searchHistoryTitle = findViewById(R.id.searchHistoryTitle)
         clearHistoryButton = findViewById(R.id.clearHistoryButton)
-        val backButton = findViewById<ImageView>(R.id.back_button)
-        backButton.setOnClickListener {
+
+        val toolbarSearch = findViewById<androidx.appcompat.widget.Toolbar?>(R.id.back_button)
+        toolbarSearch.setNavigationOnClickListener {
             finish()
         }
         trackListRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -101,7 +105,15 @@ class SearchActivity : AppCompatActivity() {
 
         queryInput.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                clearIcon.isVisible= !s.isNullOrEmpty()
+                clearIcon.isVisible = !s.isNullOrEmpty()
+                if (s.isNullOrEmpty()) {
+                    showTrackHistory()
+                } else {
+                    trackListRecyclerView.visibility = View.GONE
+                    historyRecyclerView.visibility = View.GONE
+                    searchHistoryTitle.visibility = View.GONE
+                    clearHistoryButton.visibility = View.GONE
+                }
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -136,7 +148,7 @@ class SearchActivity : AppCompatActivity() {
 
         if (trackHistory.isEmpty()) {
             historyRecyclerView.visibility = View.GONE
-            imageNoResultsError.visibility = View.VISIBLE
+            imageNoResultsError.visibility = View.GONE
             trackListRecyclerView.visibility = View.GONE
             searchHistoryTitle.visibility = View.GONE
             clearHistoryButton.visibility = View.GONE

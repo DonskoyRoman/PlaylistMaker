@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.widget.Toast
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import android.content.Intent
 
 class TrackHistoryManager(private val context: Context) {
     private val sharedPreferences: SharedPreferences =
@@ -15,13 +16,25 @@ class TrackHistoryManager(private val context: Context) {
         var trackHistory = loadTrackHistory()
         if (trackHistory.any { it.trackId == track.trackId }) {
             trackHistory.removeAll { it.trackId == track.trackId }
-            Toast.makeText(context, "Трэк ${track.trackName} уже есть в истории", Toast.LENGTH_SHORT).show()
         }
         trackHistory.add(0, track)
         if (trackHistory.size > 10) {
             trackHistory = trackHistory.subList(0, 9)
         }
         saveTrackHistory(trackHistory)
+
+        val intent = Intent(context, AudioplayerActivity::class.java).apply {
+            putExtra("track_id", track.trackId)
+            putExtra("track_name", track.trackName)
+            putExtra("artist_name", track.artistName)
+            putExtra("collection_name", track.collectionName)
+            putExtra("release_year", track.getReleaseYear())
+            putExtra("genre", track.primaryGenreName)
+            putExtra("country", track.country)
+            putExtra("duration", track.trackTimeMillis)
+            putExtra("artwork_url", track.getCoverArtwork())
+        }
+        context.startActivity(intent)
     }
 
 
